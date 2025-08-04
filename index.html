@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Offline PDF Reader</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Offline PDF Reader</h1>
+  <input type="file" id="file-input" accept="application/pdf">
+  <div id="pdf-controls">
+    <button id="prev-page">← Prev</button>
+    <span id="page-info">Page <span id="page-num">1</span> / <span id="page-count">1</span></span>
+    <button id="next-page">Next →</button>
+  </div>
+  <canvas id="pdf-canvas"></canvas>
+
+  <script src="lib/pdf.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

@@ -24,10 +24,14 @@ document.getElementById('file-input').addEventListener('change', function(e) {
 function renderPage(num) {
   pageRendering = true;
   pdfDoc.getPage(num).then(function(page) {
-    const viewport = page.getViewport({ scale: 1.5 });
+    const scale = 3;
+    const viewport = page.getViewport({ scale: scale });
     canvas.height = viewport.height;
     canvas.width = viewport.width;
 
+    canvas.style.width = (viewport.width / scale) + 'px';
+    canvas.style.height = (viewport.height / scale) + 'px';
+      
     const renderContext = {
       canvasContext: ctx,
       viewport: viewport

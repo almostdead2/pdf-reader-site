@@ -51,3 +51,15 @@ document.getElementById('next-page').addEventListener('click', function() {
   pageNum++;
   renderPage(pageNum);
 });
+
+// Export to image (PNG/JPEG/JPG)
+document.getElementById('export-image').addEventListener('click', function() {
+  const format = document.getElementById('image-format').value;
+  const mimeType = format === 'png' ? 'image/png' : 'image/jpeg';
+  const dataURL = canvas.toDataURL(mimeType, 1.0);
+
+  const link = document.createElement('a');
+  link.href = dataURL;
+  link.download = `page-${pageNum}.${format}`;
+  link.click();
+});

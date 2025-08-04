@@ -15,6 +15,16 @@
   </div>
   <canvas id="pdf-canvas"></canvas>
 
+  <!-- Export controls added below -->
+  <div id="export-controls">
+    <select id="image-format">
+      <option value="png">PNG</option>
+      <option value="jpeg">JPEG</option>
+      <option value="jpg">JPG</option>
+    </select>
+    <button id="export-image">Export Current Page as Image</button>
+  </div>
+
   <script src="lib/pdf.js"></script>
   <script src="script.js"></script>
 </body>

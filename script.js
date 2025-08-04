@@ -24,7 +24,7 @@ document.getElementById('file-input').addEventListener('change', function(e) {
 function renderPage(num) {
   pageRendering = true;
   pdfDoc.getPage(num).then(function(page) {
-    const scale = 3;
+    const scale = 4;
     const viewport = page.getViewport({ scale: scale });
     canvas.height = viewport.height;
     canvas.width = viewport.width;

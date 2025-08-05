@@ -11,27 +11,40 @@ document.getElementById('file-input').addEventListener('change', function(e) {
   const reader = new FileReader();
   reader.onload = function() {
     const typedarray = new Uint8Array(this.result);
-    pdfjsLib.getDocument({ data: typedarray }).promise.then(function(pdf) {
-      pdfDoc = pdf;
-      document.getElementById('page-count').textContent = pdf.numPages;
-      pageNum = 1;
-      renderPage(pageNum);
-    });
+    loadPdf(typedarray); // use helper to handle password
   };
   reader.readAsArrayBuffer(file);
 });
 
+function loadPdf(data, password = null) {
+  pdfjsLib.getDocument({ data, password }).promise.then(function(pdf) {
+    pdfDoc = pdf;
+    document.getElementById('page-count').textContent = pdf.numPages;
+    pageNum = 1;
+    renderPage(pageNum);
+  }).catch(function(error) {
+    if (error.name === 'PasswordException') {
+      const userPassword = prompt("This PDF is password protected. Please enter the password:");
+      if (userPassword !== null) {
+        loadPdf(data, userPassword);
+      }
+    } else {
+      alert('Failed to open PDF: ' + error.message);
+    }
+  });
+}
+
 function renderPage(num) {
   pageRendering = true;
   pdfDoc.getPage(num).then(function(page) {
-    const scale = 4;
+    const scale = 3; // high-quality export
     const viewport = page.getViewport({ scale: scale });
     canvas.height = viewport.height;
     canvas.width = viewport.width;
 
     canvas.style.width = (viewport.width / scale) + 'px';
     canvas.style.height = (viewport.height / scale) + 'px';
-      
+
     const renderContext = {
       canvasContext: ctx,
       viewport: viewport

@@ -37,7 +37,7 @@ function loadPdf(data, password = null) {
 function renderPage(num) {
   pageRendering = true;
   pdfDoc.getPage(num).then(function(page) {
-    const scale = 3; // high-quality export
+    const scale = 4; // high-quality export
     const viewport = page.getViewport({ scale: scale });
     canvas.height = viewport.height;
     canvas.width = viewport.width;

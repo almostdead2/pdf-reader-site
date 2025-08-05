@@ -10,14 +10,16 @@ document.getElementById('file-input').addEventListener('change', function(e) {
 
   const reader = new FileReader();
   reader.onload = function() {
-    const typedarray = new Uint8Array(this.result);
-    loadPdf(typedarray); // use helper to handle password
+    const originalBuffer = this.result;
+    loadPdf(originalBuffer); // use helper to handle password
   };
   reader.readAsArrayBuffer(file);
 });
 
-function loadPdf(data, password = null) {
-  pdfjsLib.getDocument({ data, password }).promise.then(function(pdf) {
+function loadPdf(buffer, password = null) {
+  const clonedBuffer = buffer.slice(0); // clone to avoid detached buffer error
+
+  pdfjsLib.getDocument({ data: clonedBuffer, password }).promise.then(function(pdf) {
     pdfDoc = pdf;
     document.getElementById('page-count').textContent = pdf.numPages;
     pageNum = 1;
@@ -26,7 +28,7 @@ function loadPdf(data, password = null) {
     if (error.name === 'PasswordException') {
       const userPassword = prompt("This PDF is password protected. Please enter the password:");
       if (userPassword !== null) {
-        loadPdf(data, userPassword);
+        loadPdf(buffer, userPassword); // retry with original buffer
       }
     } else {
       alert('Failed to open PDF: ' + error.message);
